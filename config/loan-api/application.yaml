@@ -1,0 +1,13 @@
+spring:
+  security:
+    user:
+      name: user
+      password: password
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    open-in-view: false
+  datasource:
+    username: user
+    password: password

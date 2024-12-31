@@ -1,0 +1,1 @@
+GRANT ALL ON SCHEMA loan_api TO loan_api;

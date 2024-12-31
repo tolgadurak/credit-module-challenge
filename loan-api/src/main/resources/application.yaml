@@ -1,0 +1,12 @@
+server:
+  port: 8100
+spring:
+  cloud:
+    config:
+      username: user
+      password: password
+      uri: http://localhost:8888
+  application:
+    name: loan-api
+  config:
+    import: 'configserver:'

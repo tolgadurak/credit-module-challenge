@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.tolgadurak.creditmodulechallenge"
-version = "0.0.1-SNAPSHOT"
+version = "SNAPSHOT"
 
 java {
     toolchain {
@@ -32,6 +32,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")

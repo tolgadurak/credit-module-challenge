@@ -1,0 +1,1 @@
+CREATE USER loan_api WITH ENCRYPTED PASSWORD 'password';

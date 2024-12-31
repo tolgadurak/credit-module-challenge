@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.tolgadurak.creditmodulechallenge"
-version = "0.0.1-SNAPSHOT"
+version = "SNAPSHOT"
 
 java {
     toolchain {

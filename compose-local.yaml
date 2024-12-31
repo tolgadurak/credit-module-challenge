@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:17.2
+    ports:
+      - "127.0.0.1:5432:5432"
+    restart: always
+    env_file:
+      - compose_env/postgres/local.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    networks:
+      - app_network
+  config-server:
+    image: localhost:5000/credit-module-challenge/config-server:${CONFIG_SERVER_VERSION}
+    ports:
+      - "127.0.0.1:8888:8888"
+    restart: always
+    env_file:
+      - compose_env/config-server/local.env
+    volumes:
+      - ./config:/app/config/
+    build:
+      context: config-server
+      args:
+        - APP_VERSION=${CONFIG_SERVER_VERSION}
+      dockerfile: Dockerfile
+    networks:
+      - app_network
+  loan-api:
+    image: localhost:5000/credit-module-challenge/loan-api:${LOAN_API_VERSION}
+    ports:
+      - "127.0.0.1:8100:8100"
+    depends_on:
+      - config-server
+    restart: always
+    env_file:
+      - compose_env/loan-api/local.env
+    build:
+      context: loan-api
+      args:
+        - APP_VERSION=${LOAN_API_VERSION}
+      dockerfile: Dockerfile
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+
+networks:
+  app_network:
+    internal: true
