@@ -22,7 +22,7 @@ This project consist of several modules which is independently managed Spring Bo
 |     loan-api     | Loan API which contains business logic of customers and their loans |
 
 ## How to build
-There are several ways to build a Spring Boot module.
+There are several ways to build Spring Boot modules.
 The traditional way is to use embedded gradlew
 scripts which use gradle build system.
 Depending on platform run the following commands.
