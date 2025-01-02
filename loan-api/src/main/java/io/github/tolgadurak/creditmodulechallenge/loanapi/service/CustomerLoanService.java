@@ -18,7 +18,6 @@ import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.PagedRe
 import io.github.tolgadurak.creditmodulechallenge.loanapi.repository.CustomerJpaRepository;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.repository.CustomerLoanInstallmentJpaRepository;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.repository.CustomerLoanJpaRepository;
-import io.github.tolgadurak.creditmodulechallenge.loanapi.repository.CustomerLoanLimitJpaRepository;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.service.mapper.CustomerLoanServiceMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +41,6 @@ public class CustomerLoanService {
     private final CustomerLoanServiceMapper customerLoanServiceMapper;
     private final CustomerJpaRepository customerJpaRepository;
     private final CustomerLoanJpaRepository customerLoanJpaRepository;
-    private final CustomerLoanLimitJpaRepository customerLoanLimitJpaRepository;
     private final CustomerLoanInstallmentJpaRepository customerLoanInstallmentJpaRepository;
 
     @Transactional
