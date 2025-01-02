@@ -9,5 +9,7 @@ spring:
     show-sql: true
     open-in-view: false
   datasource:
+    username: loan_api
+    password: password
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.xml
