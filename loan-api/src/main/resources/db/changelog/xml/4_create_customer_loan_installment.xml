@@ -23,7 +23,7 @@
             <column name="customer_loan_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_customer_installment_loan_customer_loan" referencedTableName="customer_loan" referencedColumnNames="id" />
             </column>
-            <column name="status" type="integer">
+            <column name="paid" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false" />
             </column>
             <column name="installment_number" type="integer">

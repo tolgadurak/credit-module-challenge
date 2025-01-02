@@ -5,7 +5,6 @@ import io.github.tolgadurak.creditmodulechallenge.loanapi.entity.CustomerEntity;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.entity.CustomerLoanEntity;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.entity.CustomerLoanInstallmentEntity;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.entity.CustomerLoanLimitEntity;
-import io.github.tolgadurak.creditmodulechallenge.loanapi.enums.CustomerLoanInstallmentStatus;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanCreateRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanFilterRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanInstallmentCreateRequest;
@@ -104,7 +103,7 @@ public class CustomerLoanService {
         return IntStream.rangeClosed(1, customerLoanCreateRequest.getInstallmentCount())
                 .mapToObj(count -> {
                     CustomerLoanInstallmentEntity customerLoanInstallmentEntity = customerLoanServiceMapper.toEntity(CustomerLoanInstallmentCreateRequest.builder()
-                            .status(CustomerLoanInstallmentStatus.ACTIVE)
+                            .paid(Boolean.FALSE)
                             .installmentNumber(count)
                             .installmentAmount(installmentAmount)
                             .dueDate(LocalDateTime.now().plusMonths(count).with(TemporalAdjusters.firstDayOfMonth()))

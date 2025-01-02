@@ -1,6 +1,5 @@
 package io.github.tolgadurak.creditmodulechallenge.loanapi.model.response;
 
-import io.github.tolgadurak.creditmodulechallenge.loanapi.enums.CustomerLoanInstallmentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerLoanInstallmentQueryResponse extends BaseResponse {
-    private CustomerLoanInstallmentStatus status;
+    private Boolean paid;
     private Integer installmentNumber;
     private BigDecimal installmentAmount;
     private LocalDateTime dueDate;

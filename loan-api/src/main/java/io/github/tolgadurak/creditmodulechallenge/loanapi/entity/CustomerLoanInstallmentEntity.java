@@ -1,6 +1,5 @@
 package io.github.tolgadurak.creditmodulechallenge.loanapi.entity;
 
-import io.github.tolgadurak.creditmodulechallenge.loanapi.enums.CustomerLoanInstallmentStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,7 +25,7 @@ public class CustomerLoanInstallmentEntity extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private CustomerLoanEntity customerLoan;
     @Column
-    private CustomerLoanInstallmentStatus status;
+    private Boolean paid;
     @Column
     private Integer installmentNumber;
     @Column
