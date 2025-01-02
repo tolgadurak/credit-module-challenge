@@ -6,13 +6,23 @@ import io.github.tolgadurak.creditmodulechallenge.loanapi.entity.CustomerLoanEnt
 import io.github.tolgadurak.creditmodulechallenge.loanapi.entity.CustomerLoanInstallmentEntity;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.entity.CustomerLoanLimitEntity;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.enums.CustomerLoanInstallmentStatus;
-import io.github.tolgadurak.creditmodulechallenge.loanapi.model.*;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanCreateRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanFilterRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanInstallmentCreateRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanLimitCreateRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanPayRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanPayResponse;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanQueryResponse;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.PagedResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.repository.CustomerJpaRepository;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.repository.CustomerLoanJpaRepository;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.repository.CustomerLoanLimitJpaRepository;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.service.mapper.CustomerLoanServiceMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -47,8 +57,26 @@ public class CustomerLoanService {
     }
 
     @Transactional
-    public CustomerLoanPayResult payCustomerLoan(String customerId, String loanId, CustomerLoanPayRequest customerLoanPayRequest) {
-        return CustomerLoanPayResult.builder().build();
+    public CustomerLoanPayResponse payCustomerLoan(String customerId, String loanId, CustomerLoanPayRequest customerLoanPayRequest) {
+        return CustomerLoanPayResponse.builder().build();
+    }
+
+    @Transactional
+    public PagedResponse<CustomerLoanQueryResponse> queryCustomerLoan(String customerId, CustomerLoanFilterRequest filter) {
+        Pageable pageable = PageRequest.of(filter.getPage(), filter.getSize());
+        Page<CustomerLoanEntity> pages = customerLoanJpaRepository.findByCustomerIdAndFilter(customerId, filter, pageable);
+        List<CustomerLoanQueryResponse> items = pages
+                .getContent()
+                .stream()
+                .map(customerLoanServiceMapper::toModel)
+                .toList();
+        return PagedResponse.<CustomerLoanQueryResponse>builder()
+                .items(items)
+                .page(pages.getNumber())
+                .size(pages.getSize())
+                .pageCount(pages.getTotalPages())
+                .totalCount(pages.getTotalElements())
+                .build();
     }
 
     private void checkIfEligible(CustomerLoanCreateRequest customerLoanCreateRequest, CustomerEntity customerEntity) {
@@ -88,6 +116,7 @@ public class CustomerLoanService {
         entity.setCustomer(customerEntity);
         entity.setTotalAmount(totalAmount);
         entity.setInstallmentAmount(installmentAmount);
+        entity.setPaid(Boolean.FALSE);
         return entity;
     }
 

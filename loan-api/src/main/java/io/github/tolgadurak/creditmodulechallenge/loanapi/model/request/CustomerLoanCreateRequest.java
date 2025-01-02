@@ -1,4 +1,4 @@
-package io.github.tolgadurak.creditmodulechallenge.loanapi.model;
+package io.github.tolgadurak.creditmodulechallenge.loanapi.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

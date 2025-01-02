@@ -3,13 +3,21 @@ package io.github.tolgadurak.creditmodulechallenge.loanapi.rest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.facade.CustomerLoanFacade;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.headers.LoanApiHeaders;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanCreateRestRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanFilterRestRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanPayRestRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanPayResultRestResponse;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanQueryRestResponse;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.PagedRestResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/loans")
@@ -26,8 +34,10 @@ public class CustomerLoanController {
     }
 
     @GetMapping
-    public void listLoans(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId) {
-
+    public ResponseEntity<PagedRestResponse<CustomerLoanQueryRestResponse>> listCustomerLoans(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId,
+                                                                                              CustomerLoanFilterRestRequest customerLoanFilterRestRequest) {
+        PagedRestResponse<CustomerLoanQueryRestResponse> pagedRestResponse = customerLoanFacade.queryCustomerLoan(customerId, customerLoanFilterRestRequest);
+        return new ResponseEntity<>(pagedRestResponse, HttpStatus.OK);
     }
 
     @GetMapping("/installments")

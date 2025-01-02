@@ -50,6 +50,9 @@
             <column name="last_due_date" type="datetime">
                 <constraints nullable="false" />
             </column>
+            <column name="paid" type="boolean" defaultValueBoolean="false" >
+                <constraints nullable="false" />
+            </column>
         </createTable>
         <createSequence sequenceName="customer_loan_seq" incrementBy="50" startValue="50" />
     </changeSet>
