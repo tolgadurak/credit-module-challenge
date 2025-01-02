@@ -7,7 +7,7 @@ The project is created just for experimenting and learning features of Java and 
 - JAVA_HOME environment variable is set
 - Postgres >= 17
 
-There is convenience compose.yaml file to deploy dependencies for development purpose such as Postgres SQL Database.
+There is a convenience compose.yaml file to deploy dependencies for development purpose such as Postgres SQL Database.
 Run the following command on the root directory.
 ```
 docker compose up -d
