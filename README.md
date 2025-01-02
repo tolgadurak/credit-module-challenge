@@ -68,7 +68,7 @@ gradlew bootRun
 ```
 
 ### Docker way
-You can also run entire stack in docker by using the command below. Please make sure you are on the root directory of project.
+You can also run entire stack in Docker by using the command below. Please make sure you are on the root directory of project.
 ```
 CONFIG_SERVER_VERSION=SNAPSHOT LOAN_API_VERSION=SNAPSHOT docker compose -f compose-local.yaml up -d
 ```
