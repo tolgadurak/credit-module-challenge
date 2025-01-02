@@ -3,8 +3,15 @@
 The project is created just for experimenting and learning features of Java and Spring Boot.
 
 ## Prerequisites
-- JDK 21
+- JDK >= 21
 - JAVA_HOME environment variable is set
+- Postgres >= 17
+
+There is convenience compose.yaml file to deploy dependencies for development purpose such as Postgres SQL Database.
+Run the following command on the root directory.
+```
+docker compose up -d
+```
 
 ## Spring Boot Modules
 This project consist of several modules which is independently managed Spring Boot projects which use Gradle build system.
