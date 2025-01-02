@@ -8,8 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface CustomerLoanJpaRepository extends JpaRepository<CustomerLoanEntity, Long> {
     @Query(value = "SELECT cl FROM CustomerLoanEntity cl LEFT JOIN FETCH cl.installments WHERE cl.customer.referenceId = :#{#customerId} AND cl.installmentCount = :#{#filter.installmentCount} AND cl.paid = :#{#filter.paid}",
             countQuery = "SELECT COUNT(cl) FROM CustomerLoanEntity cl WHERE cl.customer.referenceId = :#{#customerId} AND cl.installmentCount = :#{#filter.installmentCount} AND cl.paid = :#{#filter.paid}")
     Page<CustomerLoanEntity> findByCustomerIdAndFilter(@Param("customerId") String customerId, @Param("filter") CustomerLoanFilterRequest filter, Pageable pageable);
+
+    Optional<CustomerLoanEntity> findByCustomerReferenceIdAndReferenceId(String customerId, String customerLoanId);
 }

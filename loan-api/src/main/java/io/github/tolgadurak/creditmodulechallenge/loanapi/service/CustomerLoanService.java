@@ -5,6 +5,7 @@ import io.github.tolgadurak.creditmodulechallenge.loanapi.entity.CustomerEntity;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.entity.CustomerLoanEntity;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.entity.CustomerLoanInstallmentEntity;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.entity.CustomerLoanLimitEntity;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.exception.LoanApiBusinessException;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanCreateRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanFilterRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanInstallmentCreateRequest;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -77,25 +79,27 @@ public class CustomerLoanService {
 
     @Transactional
     public List<CustomerLoanInstallmentQueryResponse> queryCustomerLoanInstallments(String customerId, String customerLoanId) {
+        customerLoanJpaRepository.findByCustomerReferenceIdAndReferenceId(customerId, customerLoanId)
+                .orElseThrow(() -> new LoanApiBusinessException("errors.customerLoanNotFound", HttpStatus.BAD_REQUEST));
         List<CustomerLoanInstallmentEntity> installmentEntities = customerLoanInstallmentJpaRepository.findByCustomerLoanCustomerReferenceIdAndCustomerLoanReferenceId(customerId, customerLoanId);
         return customerLoanServiceMapper.toCustomerLoanInstallmentQueryResponseList(installmentEntities);
     }
 
     private void checkIfEligible(CustomerLoanCreateRequest customerLoanCreateRequest, CustomerEntity customerEntity) {
+        List<Integer> allowedInstallments = loanApiConfig.getAllowedInstallments();
+        if (!allowedInstallments.contains(customerLoanCreateRequest.getInstallmentCount())) {
+            throw new LoanApiBusinessException("errors.invalidInstallmentCount", HttpStatus.BAD_REQUEST);
+        }
+        if (customerLoanCreateRequest.getInterestRate().compareTo(loanApiConfig.getMinimumInterestRate()) < 0 ||
+                customerLoanCreateRequest.getInterestRate().compareTo(loanApiConfig.getMaximumInterestRate()) > 0) {
+            throw new LoanApiBusinessException("errors.invalidInterestRate", HttpStatus.BAD_REQUEST);
+        }
         int customerLoanLimitResult = customerEntity.getLoanLimits().stream()
                 .map(CustomerLoanLimitEntity::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .compareTo(customerLoanCreateRequest.getAmount());
         if (customerLoanLimitResult < 0) {
-            throw new RuntimeException("Not enough loan limit"); // TODO: Throw managed exception
-        }
-        List<Integer> allowedInstallments = loanApiConfig.getAllowedInstallments();
-        if (!allowedInstallments.contains(customerLoanCreateRequest.getInstallmentCount())) {
-            throw new RuntimeException("Invalid installment count"); // TODO: Throw managed exception
-        }
-        if (customerLoanCreateRequest.getInterestRate().compareTo(loanApiConfig.getMinimumInterestRate()) < 0 ||
-                customerLoanCreateRequest.getInterestRate().compareTo(loanApiConfig.getMaximumInterestRate()) > 0) {
-            throw new RuntimeException("Invalid interest rate"); // TODO: Throw managed exception
+            throw new LoanApiBusinessException("errors.customerDoesNotHaveEnoughLimit", HttpStatus.BAD_REQUEST);
         }
     }
 

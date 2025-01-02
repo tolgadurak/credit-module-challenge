@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://postgres/credit_module_challenge?currentSchema=loan_api
+    url: jdbc:postgresql://postgres:5433/credit_module_challenge?currentSchema=loan_api
     driver-class-name: org.postgresql.Driver
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.PostgreSQLDialect
