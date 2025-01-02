@@ -20,7 +20,6 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.IntStream;
 
 @Service
@@ -39,11 +38,12 @@ public class CustomerLoanService {
         checkIfEligible(customerLoanCreateRequest, customerEntity);
         BigDecimal totalAmount = calculateTotalAmount(customerLoanCreateRequest.getAmount(), customerLoanCreateRequest.getInterestRate());
         BigDecimal installmentAmount = calculateInstallmentAmount(totalAmount, customerLoanCreateRequest.getInstallmentCount());
-        List<CustomerLoanInstallmentEntity> installments = createCustomerLoanInstallmentsEntity(customerLoanCreateRequest, installmentAmount);
-        CustomerLoanEntity entity = createCustomerLoanEntity(customerLoanCreateRequest, customerEntity, installments, totalAmount, installmentAmount);
+        CustomerLoanEntity customerLoanEntity = createCustomerLoanEntity(customerLoanCreateRequest, customerEntity, totalAmount, installmentAmount);
+        List<CustomerLoanInstallmentEntity> installments = createCustomerLoanInstallmentsEntity(customerLoanEntity, customerLoanCreateRequest, installmentAmount);
+        updateCustomerLoanEntity(customerLoanEntity, installments);
         CustomerLoanLimitEntity customerLoanLimitEntity = createCustomerLoanLimitEntity(totalAmount, customerEntity);
         customerEntity.getLoanLimits().add(customerLoanLimitEntity);
-        customerLoanJpaRepository.save(entity);
+        customerLoanJpaRepository.save(customerLoanEntity);
     }
 
     @Transactional
@@ -69,26 +69,25 @@ public class CustomerLoanService {
         }
     }
 
-    private List<CustomerLoanInstallmentEntity> createCustomerLoanInstallmentsEntity(CustomerLoanCreateRequest customerLoanCreateRequest, BigDecimal installmentAmount) {
-        return IntStream.of(customerLoanCreateRequest.getInstallmentCount())
-                .mapToObj(count ->
-                        customerLoanServiceMapper.toEntity(CustomerLoanInstallmentCreateRequest.builder()
-                                .status(CustomerLoanInstallmentStatus.ACTIVE)
-                                .installmentNumber(count)
-                                .installmentAmount(installmentAmount)
-                                .dueDate(LocalDateTime.now().plusMonths(1 + count).with(TemporalAdjusters.firstDayOfMonth()))
-                                .build())
-                ).toList();
+    private List<CustomerLoanInstallmentEntity> createCustomerLoanInstallmentsEntity(CustomerLoanEntity customerLoanEntity, CustomerLoanCreateRequest customerLoanCreateRequest, BigDecimal installmentAmount) {
+        return IntStream.rangeClosed(1, customerLoanCreateRequest.getInstallmentCount())
+                .mapToObj(count -> {
+                    CustomerLoanInstallmentEntity customerLoanInstallmentEntity = customerLoanServiceMapper.toEntity(CustomerLoanInstallmentCreateRequest.builder()
+                            .status(CustomerLoanInstallmentStatus.ACTIVE)
+                            .installmentNumber(count)
+                            .installmentAmount(installmentAmount)
+                            .dueDate(LocalDateTime.now().plusMonths(count).with(TemporalAdjusters.firstDayOfMonth()))
+                            .build());
+                    customerLoanInstallmentEntity.setCustomerLoan(customerLoanEntity);
+                    return customerLoanInstallmentEntity;
+                }).toList();
     }
 
-    private CustomerLoanEntity createCustomerLoanEntity(CustomerLoanCreateRequest customerLoanCreateRequest, CustomerEntity customerEntity, List<CustomerLoanInstallmentEntity> installments, BigDecimal totalAmount, BigDecimal installmentAmount) {
+    private CustomerLoanEntity createCustomerLoanEntity(CustomerLoanCreateRequest customerLoanCreateRequest, CustomerEntity customerEntity, BigDecimal totalAmount, BigDecimal installmentAmount) {
         CustomerLoanEntity entity = customerLoanServiceMapper.toEntity(customerLoanCreateRequest);
         entity.setCustomer(customerEntity);
-        entity.setInstallments(installments);
         entity.setTotalAmount(totalAmount);
         entity.setInstallmentAmount(installmentAmount);
-        entity.setFirstDueDate(LocalDateTime.now().plusMonths(1).with(TemporalAdjusters.firstDayOfMonth()));
-        entity.setLastDueDate(LocalDateTime.now().plusMonths(1 + installments.size()).with(TemporalAdjusters.firstDayOfMonth()));
         return entity;
     }
 
@@ -102,13 +101,15 @@ public class CustomerLoanService {
 
     private CustomerLoanLimitEntity createCustomerLoanLimitEntity(BigDecimal totalAmount, CustomerEntity customerEntity) {
         CustomerLoanLimitEntity customerLoanLimitEntity = customerLoanServiceMapper.toEntity(CustomerLoanLimitCreateRequest.builder()
-                .amount(totalAmount)
+                .amount(totalAmount.negate())
                 .build());
         customerLoanLimitEntity.setCustomer(customerEntity);
         return customerLoanLimitEntity;
     }
 
-    public static void main(String[] args) {
-        System.out.println(UUID.randomUUID().toString());
+    private void updateCustomerLoanEntity(CustomerLoanEntity customerLoanEntity, List<CustomerLoanInstallmentEntity> installments) {
+        customerLoanEntity.setInstallments(installments);
+        customerLoanEntity.setFirstDueDate(installments.getFirst().getDueDate());
+        customerLoanEntity.setLastDueDate(installments.getLast().getDueDate());
     }
 }

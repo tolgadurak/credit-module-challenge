@@ -13,3 +13,8 @@ spring:
     password: password
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.xml
+loan-api:
+  config:
+    allowed-installments: 6, 9, 12, 24
+    minimum-interest-rate: 0.10
+    maximum-interest-rate: 0.50

@@ -11,7 +11,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface CustomerLoanFacadeMapper {
 
-    CustomerLoanCreateRequest toModel(final CustomerLoanCreateRestRequest customerLoanCreateRestRequest);
+    CustomerLoanCreateRequest toModel(CustomerLoanCreateRestRequest customerLoanCreateRestRequest);
 
     CustomerLoanPayRequest toModel(final CustomerLoanPayRestRequest customerLoanPayRestRequest);
 
