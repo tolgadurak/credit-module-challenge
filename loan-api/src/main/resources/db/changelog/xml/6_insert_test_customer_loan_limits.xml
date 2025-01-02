@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="6_insert_test_customer_loan_limits.xml" author="tolga">
+        <insert tableName="customer_loan_limit">
+            <column name="id" valueSequenceNext="customer_loan_limit_seq" />
+            <column name="entity_status" value="0" />
+            <column name="entity_status" value="0" />
+            <column name="reference_id" value="84b2a1f6-c3ec-47a4-aae1-ae7bf9479a50" />
+            <column name="created_date" value="2025-01-01 00:00:00.000000 +00:00" />
+            <column name="customer_id" valueComputed="(SELECT c.id FROM customer c WHERE c.reference_id='5784ba6e-075c-4506-96cb-c49dc7102f7f')" />
+            <column name="amount" value="4000.00" />
+        </insert>
+        <insert tableName="customer_loan_limit">
+            <column name="id" valueSequenceNext="customer_loan_limit_seq" />
+            <column name="entity_status" value="0" />
+            <column name="reference_id" value="f2f6b283-ad34-42e7-a12f-d3f221630263" />
+            <column name="created_date" value="2025-01-01 00:00:00.000000 +00:00" />
+            <column name="customer_id" valueComputed="(SELECT c.id FROM customer c WHERE c.reference_id='5784ba6e-075c-4506-96cb-c49dc7102f7f')" />
+            <column name="amount" value="6000.00" />
+        </insert>
+        <insert tableName="customer_loan_limit">
+            <column name="id" valueSequenceNext="customer_loan_limit_seq" />
+            <column name="entity_status" value="0" />
+            <column name="reference_id" value="7b24e4a0-0dfc-4676-b85e-4a6570983524" />
+            <column name="created_date" value="2025-01-01 00:00:00.000000 +00:00" />
+            <column name="customer_id" valueComputed="(SELECT c.id FROM customer c WHERE c.reference_id='8e3278e7-71c7-4366-85f0-963cd5210198')" />
+            <column name="amount" value="2000.00" />
+        </insert>
+        <insert tableName="customer_loan_limit">
+            <column name="id" valueSequenceNext="customer_loan_limit_seq" />
+            <column name="entity_status" value="0" />
+            <column name="reference_id" value="80cddba6-4315-4893-8b28-b230d4f1d58d" />
+            <column name="created_date" value="2025-01-01 00:00:00.000000 +00:00" />
+            <column name="customer_id" valueComputed="(SELECT c.id FROM customer c WHERE c.reference_id='8e3278e7-71c7-4366-85f0-963cd5210198')" />
+            <column name="amount" value="3000.00" />
+        </insert>
+        <insert tableName="customer_loan_limit">
+            <column name="id" valueSequenceNext="customer_loan_limit_seq" />
+            <column name="entity_status" value="0" />
+            <column name="reference_id" value="ed92bd2c-90ec-40bf-a9e6-edeb41b568f3" />
+            <column name="created_date" value="2025-01-01 00:00:00.000000 +00:00" />
+            <column name="customer_id" valueComputed="(SELECT c.id FROM customer c WHERE c.reference_id='9af21b2f-3c13-4343-8294-1d1ce30c6638')" />
+            <column name="amount" value="1000.00" />
+        </insert>
+        <insert tableName="customer_loan_limit">
+            <column name="id" valueSequenceNext="customer_loan_limit_seq" />
+            <column name="entity_status" value="0" />
+            <column name="reference_id" value="88562134-303c-4ead-88fe-5ca0cbcc4f3e" />
+            <column name="created_date" value="2025-01-01 00:00:00.000000 +00:00" />
+            <column name="customer_id" valueComputed="(SELECT c.id FROM customer c WHERE c.reference_id='9af21b2f-3c13-4343-8294-1d1ce30c6638')" />
+            <column name="amount" value="1000.00" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>

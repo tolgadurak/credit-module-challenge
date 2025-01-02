@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="5_insert_test_customers.xml" author="tolga">
+        <insert tableName="customer">
+            <column name="id" valueSequenceNext="customer_seq" />
+            <column name="entity_status" value="0" />
+            <column name="reference_id" value="5784ba6e-075c-4506-96cb-c49dc7102f7f" />
+            <column name="created_date" value="2025-01-01 00:00:00.000000 +00:00" />
+            <column name="first_name" value="first_name_1" />
+            <column name="last_name" value="last_name_1" />
+        </insert>
+        <insert tableName="customer">
+            <column name="id" valueSequenceNext="customer_seq" />
+            <column name="entity_status" value="0" />
+            <column name="reference_id" value="8e3278e7-71c7-4366-85f0-963cd5210198" />
+            <column name="created_date" value="2025-01-01 00:00:00.000000 +00:00" />
+            <column name="first_name" value="first_name_2" />
+            <column name="last_name" value="last_name_2" />
+        </insert>
+        <insert tableName="customer">
+            <column name="id" valueSequenceNext="customer_seq" />
+            <column name="entity_status" value="0" />
+            <column name="reference_id" value="9af21b2f-3c13-4343-8294-1d1ce30c6638" />
+            <column name="created_date" value="2025-01-01 00:00:00.000000 +00:00" />
+            <column name="first_name" value="first_name_3" />
+            <column name="last_name" value="last_name_3" />
+        </insert>
+        <insert tableName="customer">
+            <column name="id" valueSequenceNext="customer_seq" />
+            <column name="entity_status" value="0" />
+            <column name="reference_id" value="75323d46-94b8-4887-9581-1989732919c8" />
+            <column name="created_date" value="2025-01-01 00:00:00.000000 +00:00" />
+            <column name="first_name" value="first_name_4" />
+            <column name="last_name" value="last_name_4" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>

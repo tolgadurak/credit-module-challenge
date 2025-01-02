@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="4_create_customer_loan_installment.xml" author="tolga">
+        <createTable tableName="customer_loan_installment">
+            <column name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="customer_loan_installment_id_pk"/>
+            </column>
+            <column name="entity_status" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="reference_id" type="varchar(256)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="customer_loan_installment_reference_id_uc" />
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="updated_date" type="datetime">
+                <constraints nullable="true" />
+            </column>
+            <column name="customer_loan_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_customer_installment_loan_customer_loan" referencedTableName="customer_loan" referencedColumnNames="id" />
+            </column>
+            <column name="status" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="installment_number" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="installment_amount" type="decimal(16,2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="due_date" type="datetime">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+        <createSequence sequenceName="customer_loan_installment_seq" incrementBy="50" startValue="50"/>
+    </changeSet>
+</databaseChangeLog>

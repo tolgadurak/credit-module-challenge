@@ -1,0 +1,23 @@
+name: credit_module_challenge_dependencies_only
+services:
+  postgres:
+    image: postgres:17.2
+    container_name: postgres
+    ports:
+      - "127.0.0.1:5433:5433"
+    restart: always
+    environment:
+      PGPORT: 5433
+    env_file:
+      - compose_env/postgres/local.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+
+networks:
+  app_network:

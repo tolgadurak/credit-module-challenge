@@ -1,11 +1,11 @@
 spring:
   datasource:
-    url: jdbc:h2:file:./h2data/loan_api
+    url: jdbc:h2:mem:loan_api
     driver-class-name: org.h2.Driver
+    username: sa
+    password:
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create-drop
   h2:
     console:
       enabled: true

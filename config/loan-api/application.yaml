@@ -9,5 +9,5 @@ spring:
     show-sql: true
     open-in-view: false
   datasource:
-    username: user
-    password: password
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
