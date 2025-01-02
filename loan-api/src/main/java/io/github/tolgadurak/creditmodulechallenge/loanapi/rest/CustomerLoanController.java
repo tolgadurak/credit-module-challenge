@@ -5,6 +5,7 @@ import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.headers.LoanApiHe
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanCreateRestRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanFilterRestRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanPayRestRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanInstallmentQueryRestResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanPayResultRestResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanQueryRestResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.PagedRestResponse;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/customer-loans")
@@ -41,16 +44,17 @@ public class CustomerLoanController {
     }
 
     @GetMapping("/installments")
-    public void listInstallments(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId,
-                                 @RequestHeader(LoanApiHeaders.LOAN_ID) String loanId) {
-
+    public ResponseEntity<List<CustomerLoanInstallmentQueryRestResponse>> listInstallments(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId,
+                                                                                           @RequestHeader(LoanApiHeaders.CUSTOMER_LOAN_ID) String customerLoanId) {
+        List<CustomerLoanInstallmentQueryRestResponse> listRestResponse = customerLoanFacade.queryCustomerLoanInstallments(customerId, customerLoanId);
+        return new ResponseEntity<>(listRestResponse, HttpStatus.OK);
     }
 
     @PostMapping("/pay")
     public ResponseEntity<CustomerLoanPayResultRestResponse> payLoan(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId,
-                                                                     @RequestHeader(LoanApiHeaders.LOAN_ID) String loanId,
+                                                                     @RequestHeader(LoanApiHeaders.CUSTOMER_LOAN_ID) String customerLoanId,
                                                                      @RequestBody CustomerLoanPayRestRequest customerLoanPayRestRequest) {
-        CustomerLoanPayResultRestResponse customerLoanPayResultRestResponse = customerLoanFacade.payCustomerLoan(customerId, loanId, customerLoanPayRestRequest);
+        CustomerLoanPayResultRestResponse customerLoanPayResultRestResponse = customerLoanFacade.payCustomerLoan(customerId, customerLoanId, customerLoanPayRestRequest);
         return new ResponseEntity<>(customerLoanPayResultRestResponse, HttpStatus.OK);
     }
 

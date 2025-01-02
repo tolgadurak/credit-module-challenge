@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerLoanInstallmentQueryResponse {
+public class CustomerLoanInstallmentQueryResponse extends BaseResponse {
     private CustomerLoanInstallmentStatus status;
     private Integer installmentNumber;
     private BigDecimal installmentAmount;

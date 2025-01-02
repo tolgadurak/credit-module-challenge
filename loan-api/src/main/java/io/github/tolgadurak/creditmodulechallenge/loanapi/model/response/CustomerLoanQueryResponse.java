@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerLoanQueryResponse {
+public class CustomerLoanQueryResponse extends BaseResponse {
     private List<CustomerLoanInstallmentQueryResponse> installments;
     private String name;
     private String description;

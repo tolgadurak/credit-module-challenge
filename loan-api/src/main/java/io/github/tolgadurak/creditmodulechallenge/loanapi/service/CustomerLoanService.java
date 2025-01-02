@@ -11,10 +11,12 @@ import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.Customer
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanInstallmentCreateRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanLimitCreateRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanPayRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanInstallmentQueryResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanPayResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanQueryResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.PagedResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.repository.CustomerJpaRepository;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.repository.CustomerLoanInstallmentJpaRepository;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.repository.CustomerLoanJpaRepository;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.repository.CustomerLoanLimitJpaRepository;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.service.mapper.CustomerLoanServiceMapper;
@@ -41,6 +43,7 @@ public class CustomerLoanService {
     private final CustomerJpaRepository customerJpaRepository;
     private final CustomerLoanJpaRepository customerLoanJpaRepository;
     private final CustomerLoanLimitJpaRepository customerLoanLimitJpaRepository;
+    private final CustomerLoanInstallmentJpaRepository customerLoanInstallmentJpaRepository;
 
     @Transactional
     public void createCustomerLoan(String customerId, CustomerLoanCreateRequest customerLoanCreateRequest) {
@@ -65,11 +68,7 @@ public class CustomerLoanService {
     public PagedResponse<CustomerLoanQueryResponse> queryCustomerLoan(String customerId, CustomerLoanFilterRequest filter) {
         Pageable pageable = PageRequest.of(filter.getPage(), filter.getSize());
         Page<CustomerLoanEntity> pages = customerLoanJpaRepository.findByCustomerIdAndFilter(customerId, filter, pageable);
-        List<CustomerLoanQueryResponse> items = pages
-                .getContent()
-                .stream()
-                .map(customerLoanServiceMapper::toModel)
-                .toList();
+        List<CustomerLoanQueryResponse> items = customerLoanServiceMapper.toCustomerLoanQueryResponseList(pages.getContent());
         return PagedResponse.<CustomerLoanQueryResponse>builder()
                 .items(items)
                 .page(pages.getNumber())
@@ -77,6 +76,12 @@ public class CustomerLoanService {
                 .pageCount(pages.getTotalPages())
                 .totalCount(pages.getTotalElements())
                 .build();
+    }
+
+    @Transactional
+    public List<CustomerLoanInstallmentQueryResponse> queryCustomerLoanInstallments(String customerId, String customerLoanId) {
+        List<CustomerLoanInstallmentEntity> installmentEntities = customerLoanInstallmentJpaRepository.findByCustomerLoanCustomerReferenceIdAndCustomerLoanReferenceId(customerId, customerLoanId);
+        return customerLoanServiceMapper.toCustomerLoanInstallmentQueryResponseList(installmentEntities);
     }
 
     private void checkIfEligible(CustomerLoanCreateRequest customerLoanCreateRequest, CustomerEntity customerEntity) {

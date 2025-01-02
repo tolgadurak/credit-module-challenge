@@ -14,8 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerLoanQueryRestResponse {
-    private List<CustomerLoanInstallmentQueryResponse> installments;
+public class CustomerLoanQueryRestResponse extends BaseRestResponse {
     private String name;
     private String description;
     private Integer installmentCount;
@@ -26,4 +25,5 @@ public class CustomerLoanQueryRestResponse {
     private LocalDateTime firstDueDate;
     private LocalDateTime lastDueDate;
     private Boolean paid;
+    private List<CustomerLoanInstallmentQueryResponse> installments;
 }

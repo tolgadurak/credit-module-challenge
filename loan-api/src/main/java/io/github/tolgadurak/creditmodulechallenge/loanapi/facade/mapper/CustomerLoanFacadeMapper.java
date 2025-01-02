@@ -16,7 +16,9 @@ import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.Customer
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.PagedRestResponse;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+import java.util.List;
+
+@Mapper(componentModel = "spring", uses = { FacadeBaseMapper.class })
 public interface CustomerLoanFacadeMapper {
 
     CustomerLoanCreateRequest toModel(CustomerLoanCreateRestRequest customerLoanCreateRestRequest);
@@ -30,6 +32,8 @@ public interface CustomerLoanFacadeMapper {
     CustomerLoanQueryRestResponse toRestResponse(CustomerLoanQueryResponse customerLoanQueryResponse);
 
     PagedRestResponse<CustomerLoanQueryRestResponse> toRestResponse(PagedResponse<CustomerLoanQueryResponse> pagedResponse);
+
+    List<CustomerLoanInstallmentQueryRestResponse> toCustomerLoanInstallmentQueryRestResponseList(List<CustomerLoanInstallmentQueryResponse> customerLoanInstallmentQueryResponseList);
 
     CustomerLoanPayResultRestResponse toRestResponse(CustomerLoanPayResponse customerLoanPayResponse);
 
