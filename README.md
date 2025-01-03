@@ -77,10 +77,10 @@ CONFIG_SERVER_VERSION=SNAPSHOT LOAN_API_VERSION=SNAPSHOT docker compose -f compo
 
 - There are 4 endpoints in loan-api.
 
-  | Method | Endpoint                      | Headers                               | Description                                    |
-  |:-------|:------------------------------|---------------------------------------|:-----------------------------------------------|
-  | POST   | /customer-loans               | `X-Customer-Id `                      | Used to create new customer loans.             |
-  | GET    | /customer-loans               | `X-Customer-Id`                       | Used to list customer loans.                   |
+  | Method | Endpoint                      | Headers                              | Description                                    |
+  |:-------|:------------------------------|--------------------------------------|:-----------------------------------------------|
+  | POST   | /customer-loans               | `X-Customer-Id`                      | Used to create new customer loans.             |
+  | GET    | /customer-loans               | `X-Customer-Id`                      | Used to list customer loans.                   |
   | GET    | /customer-loans/installments  | `X-Customer-Id`, `X-Customer-Loan-Id` | Used to list installments of a customer loan.  |
   | POST   | /customer-loans/pay           | `X-Customer-Id`, `X-Customer-Loan-Id` | Used to pay a customer loan.                   |
 
