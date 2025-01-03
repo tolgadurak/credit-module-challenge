@@ -18,7 +18,7 @@ services:
       - clean
       - build
     volumes:
-      - loan-api/:/home/gradle/project
+      - loan-api:/home/gradle/project
       - gradle_home:/home/gradle/.gradle
 
 volumes:
