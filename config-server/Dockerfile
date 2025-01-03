@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21
+FROM eclipse-temurin:21-alpine
 ARG APP_VERSION
 ENV ARTIFACT_NAME=config-server-$APP_VERSION.jar
 ENV ARTIFACT_PATH=build/libs/$ARTIFACT_NAME
