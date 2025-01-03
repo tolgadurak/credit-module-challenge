@@ -5,8 +5,6 @@ services:
     command:
       - gradle
       - --no-daemon
-      - -p
-      - config-server
       - clean
       - build
     volumes:
@@ -16,13 +14,11 @@ services:
     image: gradle:jdk21-alpine
     command:
       - gradle
-      - -p
-      - loan-api
       - --no-daemon
       - clean
       - build
     volumes:
-      - $PWD/loan-api:/home/gradle/project
+      - $PWD/loan-api/:/home/gradle/project
       - gradle_home:/home/gradle/.gradle
 
 volumes:
