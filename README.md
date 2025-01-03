@@ -40,12 +40,27 @@ gradlew clean install
 ```
 
 ### Docker
-It is also possible to build Docker images by using following command.
-Environment variables at the beginning are for versioning of images.
-Please make sure you are on the root directory of project.
-```
-CONFIG_SERVER_VERSION=SNAPSHOT LOAN_API_VERSION=SNAPSHOT docker compose -f compose-local.yaml build
-```
+It is also possible to build Docker images by using following commands respectively.
+
+- You can pull necessary images below before starting.
+  ```
+  docker pull gradle:jdk21-alpine
+  docker pull eclipse-temurin:21-alpine
+  docker pull postgres:17.2
+  ```
+
+
+- Build Spring Boot JAR files using compose-gradle.yaml file.
+  ```
+  docker compose -f compose-gradle.yaml up
+  ```
+
+- Build Docker images using compose-local.yaml file.
+  Environment variables are for versioning of images.
+  ```
+  CONFIG_SERVER_VERSION=SNAPSHOT LOAN_API_VERSION=SNAPSHOT docker compose -f compose-local.yaml build
+  ```
+
 ## How to run
 There are several ways to run modules.
 
