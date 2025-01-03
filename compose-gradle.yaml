@@ -7,7 +7,7 @@ services:
       - --no-daemon
       - clean
       - build
-    working_dir: config-server
+    working_dir: ./config-server
     volumes:
       - $PWD:/home/gradle/project
       - gradle_home:/home/gradle/.gradle
@@ -18,7 +18,7 @@ services:
       - --no-daemon
       - clean
       - build
-    working_dir: loan-api
+    working_dir: ./loan-api
     volumes:
       - $PWD:/home/gradle/project
       - gradle_home:/home/gradle/.gradle
