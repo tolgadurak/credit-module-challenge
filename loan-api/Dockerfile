@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-alpine
+FROM eclipse-temurin:21
 ARG APP_VERSION
 ENV ARTIFACT_NAME=loan-api-$APP_VERSION.jar
 ENV ARTIFACT_PATH=build/libs/$ARTIFACT_NAME
