@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerLoanPayResultRestResponse {
+    private BigDecimal paidAmount;
     private BigDecimal totalPaidAmount;
     private BigDecimal changeAmount;
     private List<Integer> installmentsPaid;

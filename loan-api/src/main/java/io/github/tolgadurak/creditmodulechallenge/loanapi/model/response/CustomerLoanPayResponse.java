@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class CustomerLoanPayResponse {
+    private BigDecimal paidAmount;
     private BigDecimal totalPaidAmount;
     private BigDecimal changeAmount;
     private List<Integer> installmentsPaid;

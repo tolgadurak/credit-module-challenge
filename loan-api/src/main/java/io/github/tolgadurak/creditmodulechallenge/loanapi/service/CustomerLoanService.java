@@ -113,7 +113,7 @@ public class CustomerLoanService {
         }
 
         BigDecimal changeAmount = customerLoanPayRequest.getAmount();
-        BigDecimal totalPaidAmount = BigDecimal.ZERO;
+        BigDecimal paidAmount = BigDecimal.ZERO;
         List<Integer> installmentsPaid = new ArrayList<>();
 
         for (CustomerLoanInstallmentEntity installment : installmentsCanBePaid) {
@@ -123,7 +123,7 @@ public class CustomerLoanService {
             }
             installment.setPaid(Boolean.TRUE);
             changeAmount = changeAmount.subtract(installmentAmount);
-            totalPaidAmount = totalPaidAmount.add(installmentAmount);
+            paidAmount = paidAmount.add(installmentAmount);
             installmentsPaid.add(installment.getInstallmentNumber());
         }
 
@@ -133,8 +133,13 @@ public class CustomerLoanService {
         }
 
         customerLoanEntity = customerLoanJpaRepository.save(customerLoanEntity);
+
         return CustomerLoanPayResponse.builder()
-                .totalPaidAmount(totalPaidAmount)
+                .paidAmount(paidAmount)
+                .totalPaidAmount(customerLoanEntity.getInstallments().stream()
+                        .filter(CustomerLoanInstallmentEntity::getPaid)
+                        .map(CustomerLoanInstallmentEntity::getInstallmentAmount)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add))
                 .changeAmount(changeAmount)
                 .installmentsPaid(installmentsPaid)
                 .allInstallmentsPaid(customerLoanEntity.getInstallments().stream()
