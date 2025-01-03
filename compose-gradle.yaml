@@ -8,7 +8,7 @@ services:
       - clean
       - build
     volumes:
-      - config-server:/home/gradle/project
+      - ./config-server:/home/gradle/project
       - gradle_home:/home/gradle/.gradle
   loan-api:
     image: gradle:jdk21-alpine
@@ -18,7 +18,7 @@ services:
       - clean
       - build
     volumes:
-      - loan-api:/home/gradle/project
+      - ./loan-api:/home/gradle/project
       - gradle_home:/home/gradle/.gradle
 
 volumes:
