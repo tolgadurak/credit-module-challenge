@@ -5,22 +5,24 @@ services:
     command:
       - gradle
       - --no-daemon
+      - -p
+      - config-server
       - clean
       - build
-    working_dir: ./config-server
     volumes:
-      - $PWD:/home/gradle/project
+      - $PWD/config-server:/home/gradle/project
       - gradle_home:/home/gradle/.gradle
   loan-api:
     image: gradle:jdk21-alpine
     command:
       - gradle
+      - -p
+      - loan-api
       - --no-daemon
       - clean
       - build
-    working_dir: ./loan-api
     volumes:
-      - $PWD:/home/gradle/project
+      - $PWD/loan-api:/home/gradle/project
       - gradle_home:/home/gradle/.gradle
 
 volumes:
