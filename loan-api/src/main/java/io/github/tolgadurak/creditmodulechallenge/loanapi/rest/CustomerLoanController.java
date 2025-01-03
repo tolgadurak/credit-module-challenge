@@ -5,10 +5,13 @@ import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.headers.LoanApiHe
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanCreateRestRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanFilterRestRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanPayRestRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanCreateRestResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanInstallmentQueryRestResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanPayResultRestResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanQueryRestResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.PagedRestResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,37 +28,42 @@ import java.util.List;
 @RestController
 @RequestMapping("/customer-loans")
 @RequiredArgsConstructor
+@Tag(name = "Customer Loan Controller", description = "Endpoints for customer loan operations")
 public class CustomerLoanController {
 
     private final CustomerLoanFacade customerLoanFacade;
 
     @PostMapping
-    public ResponseEntity<Void> createLoanForCustomer(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId,
-                                                      @RequestBody @Valid CustomerLoanCreateRestRequest customerLoanCreateRestRequest) {
-        customerLoanFacade.createCustomerLoan(customerId, customerLoanCreateRestRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @Operation(summary = "Create Loan For Customer", description = "Used to create new customer loans.")
+    public ResponseEntity<CustomerLoanCreateRestResponse> createLoanForCustomer(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId,
+                                                                                @RequestBody @Valid CustomerLoanCreateRestRequest customerLoanCreateRestRequest) {
+        CustomerLoanCreateRestResponse restResponse = customerLoanFacade.createCustomerLoan(customerId, customerLoanCreateRestRequest);
+        return new ResponseEntity<>(restResponse, HttpStatus.CREATED);
     }
 
     @GetMapping
+    @Operation(summary = "List Customer Loans", description = "Used to list customer loans.")
     public ResponseEntity<PagedRestResponse<CustomerLoanQueryRestResponse>> listCustomerLoans(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId,
                                                                                               CustomerLoanFilterRestRequest customerLoanFilterRestRequest) {
-        PagedRestResponse<CustomerLoanQueryRestResponse> pagedRestResponse = customerLoanFacade.queryCustomerLoan(customerId, customerLoanFilterRestRequest);
-        return new ResponseEntity<>(pagedRestResponse, HttpStatus.OK);
+        PagedRestResponse<CustomerLoanQueryRestResponse> restResponse = customerLoanFacade.queryCustomerLoan(customerId, customerLoanFilterRestRequest);
+        return new ResponseEntity<>(restResponse, HttpStatus.OK);
     }
 
     @GetMapping("/installments")
-    public ResponseEntity<List<CustomerLoanInstallmentQueryRestResponse>> listInstallments(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId,
+    @Operation(summary = "List Customer Loan Installments", description = "Used to list installments of a customer loan.")
+    public ResponseEntity<List<CustomerLoanInstallmentQueryRestResponse>> listCustomerLoanInstallments(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId,
                                                                                            @RequestHeader(LoanApiHeaders.CUSTOMER_LOAN_ID) String customerLoanId) {
-        List<CustomerLoanInstallmentQueryRestResponse> listRestResponse = customerLoanFacade.queryCustomerLoanInstallments(customerId, customerLoanId);
-        return new ResponseEntity<>(listRestResponse, HttpStatus.OK);
+        List<CustomerLoanInstallmentQueryRestResponse> restResponse = customerLoanFacade.queryCustomerLoanInstallments(customerId, customerLoanId);
+        return new ResponseEntity<>(restResponse, HttpStatus.OK);
     }
 
     @PostMapping("/pay")
-    public ResponseEntity<CustomerLoanPayResultRestResponse> payLoan(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId,
+    @Operation(summary = "Pay Customer Loan", description = "Used to pay a customer loan.")
+    public ResponseEntity<CustomerLoanPayResultRestResponse> payCustomerLoan(@RequestHeader(LoanApiHeaders.CUSTOMER_ID) String customerId,
                                                                      @RequestHeader(LoanApiHeaders.CUSTOMER_LOAN_ID) String customerLoanId,
                                                                      @RequestBody CustomerLoanPayRestRequest customerLoanPayRestRequest) {
-        CustomerLoanPayResultRestResponse customerLoanPayResultRestResponse = customerLoanFacade.payCustomerLoan(customerId, customerLoanId, customerLoanPayRestRequest);
-        return new ResponseEntity<>(customerLoanPayResultRestResponse, HttpStatus.OK);
+        CustomerLoanPayResultRestResponse restResponse = customerLoanFacade.payCustomerLoan(customerId, customerLoanId, customerLoanPayRestRequest);
+        return new ResponseEntity<>(restResponse, HttpStatus.OK);
     }
 
 }

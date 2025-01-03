@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,5 +15,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class CustomerLoanPayResponse {
-    private BigDecimal totalAmount;
+    private BigDecimal totalPaidAmount;
+    private BigDecimal changeAmount;
+    private List<Integer> installmentsPaid;
+    private List<Integer> allInstallmentsPaid;
+    private Boolean completeLoanPaid;
 }

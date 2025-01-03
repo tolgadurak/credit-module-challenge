@@ -1,0 +1,551 @@
+{
+	"info": {
+		"_postman_id": "5b8b1b40-d977-403a-a7d9-855f89cee1fd",
+		"name": "credit-module-challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32497804"
+	},
+	"item": [
+		{
+			"name": "Create Customer Loan",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Customer-Id",
+						"value": "5784ba6e-075c-4506-96cb-c49dc7102f7f",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Loan name for Customer 1\",\r\n    \"description\": \"Loan description for Customer 1\",\r\n    \"amount\": 2500.00,\r\n    \"installmentCount\": 6,\r\n    \"interestRate\": 0.20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/customer-loans",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"customer-loans"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create Customer Loan",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Customer-Id",
+								"value": "5784ba6e-075c-4506-96cb-c49dc7102f7f",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Loan name for Customer 1\",\r\n    \"description\": \"Loan description for Customer 1\",\r\n    \"amount\": 2500.00,\r\n    \"installmentCount\": 6,\r\n    \"interestRate\": 0.20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8100/customer-loans",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"customer-loans"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Jan 2025 16:53:34 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"referenceId\": \"737a3e71-4429-416d-8040-c13fc7a7aa43\"\n}"
+				}
+			]
+		},
+		{
+			"name": "List Customer Loans Pagable",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Customer-Id",
+						"value": "5784ba6e-075c-4506-96cb-c49dc7102f7f",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8100/customer-loans?page=0&size=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"customer-loans"
+					],
+					"query": [
+						{
+							"key": "installmentCount",
+							"value": "12",
+							"disabled": true
+						},
+						{
+							"key": "paid",
+							"value": "false",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "List Customer Loans Pagable",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Customer-Id",
+								"value": "5784ba6e-075c-4506-96cb-c49dc7102f7f",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8100/customer-loans?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"customer-loans"
+							],
+							"query": [
+								{
+									"key": "installmentCount",
+									"value": "12",
+									"disabled": true
+								},
+								{
+									"key": "paid",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Jan 2025 16:54:46 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"items\": [\n        {\n            \"referenceId\": \"7dcbaced-e40e-46d9-88c0-3f8f48f783c6\",\n            \"entityStatus\": \"ACTIVE\",\n            \"createdDate\": \"2025-01-03T19:20:39.789883\",\n            \"updatedDate\": null,\n            \"name\": \"Loan name for Customer 1\",\n            \"description\": \"Loan description for Customer 1\",\n            \"installmentCount\": 6,\n            \"installmentAmount\": 370,\n            \"amount\": 1850,\n            \"totalAmount\": 2220,\n            \"interestRate\": 0.2,\n            \"firstDueDate\": \"2025-02-01T19:20:39.790881\",\n            \"lastDueDate\": \"2025-07-01T19:20:39.790881\",\n            \"paid\": false,\n            \"installments\": [\n                {\n                    \"referenceId\": \"370dc1b6-ab4e-45ea-9b09-fea52132e547\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:20:39.790881\",\n                    \"updatedDate\": null,\n                    \"paid\": true,\n                    \"installmentNumber\": 1,\n                    \"installmentAmount\": 370,\n                    \"dueDate\": \"2025-02-01T19:20:39.790881\"\n                },\n                {\n                    \"referenceId\": \"9c1fe9fd-2751-4d3b-a0ad-b7ed6917f61a\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:20:39.790881\",\n                    \"updatedDate\": null,\n                    \"paid\": true,\n                    \"installmentNumber\": 2,\n                    \"installmentAmount\": 370,\n                    \"dueDate\": \"2025-03-01T19:20:39.790881\"\n                },\n                {\n                    \"referenceId\": \"95ff3ef5-2bae-4a09-8710-5158c5532f06\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:20:39.790881\",\n                    \"updatedDate\": null,\n                    \"paid\": true,\n                    \"installmentNumber\": 3,\n                    \"installmentAmount\": 370,\n                    \"dueDate\": \"2025-04-01T19:20:39.790881\"\n                },\n                {\n                    \"referenceId\": \"5e101d8c-d599-4b05-9dd2-2d01c84c8836\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:20:39.790881\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 4,\n                    \"installmentAmount\": 370,\n                    \"dueDate\": \"2025-05-01T19:20:39.790881\"\n                },\n                {\n                    \"referenceId\": \"b638e299-fe9e-4496-8ba2-e5d91654afa6\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:20:39.790881\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 5,\n                    \"installmentAmount\": 370,\n                    \"dueDate\": \"2025-06-01T19:20:39.790881\"\n                },\n                {\n                    \"referenceId\": \"763494bf-7d8b-439c-8b0c-c43bd0041d22\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:20:39.790881\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 6,\n                    \"installmentAmount\": 370,\n                    \"dueDate\": \"2025-07-01T19:20:39.790881\"\n                }\n            ]\n        },\n        {\n            \"referenceId\": \"90cb36e8-5e7a-4ec0-87de-423b64ee66d5\",\n            \"entityStatus\": \"ACTIVE\",\n            \"createdDate\": \"2025-01-03T19:39:39.341612\",\n            \"updatedDate\": null,\n            \"name\": \"Loan name for Customer 1\",\n            \"description\": \"Loan description for Customer 1\",\n            \"installmentCount\": 6,\n            \"installmentAmount\": 500,\n            \"amount\": 2500,\n            \"totalAmount\": 3000,\n            \"interestRate\": 0.2,\n            \"firstDueDate\": \"2025-02-01T19:39:39.342611\",\n            \"lastDueDate\": \"2025-07-01T19:39:39.342611\",\n            \"paid\": false,\n            \"installments\": [\n                {\n                    \"referenceId\": \"c4085bfd-8951-4c01-acee-f4bb2d95fc4c\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:39:39.342611\",\n                    \"updatedDate\": null,\n                    \"paid\": true,\n                    \"installmentNumber\": 1,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-02-01T19:39:39.342611\"\n                },\n                {\n                    \"referenceId\": \"225cb53b-f146-4b7e-a6e1-d469dbf501a4\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:39:39.342611\",\n                    \"updatedDate\": null,\n                    \"paid\": true,\n                    \"installmentNumber\": 2,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-03-01T19:39:39.342611\"\n                },\n                {\n                    \"referenceId\": \"76e01a57-5c66-45e5-8ac1-96cc93718b78\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:39:39.342611\",\n                    \"updatedDate\": null,\n                    \"paid\": true,\n                    \"installmentNumber\": 3,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-04-01T19:39:39.342611\"\n                },\n                {\n                    \"referenceId\": \"6b761c42-1644-411c-901e-0cdb85254ccb\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:39:39.342611\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 4,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-05-01T19:39:39.342611\"\n                },\n                {\n                    \"referenceId\": \"2059035f-dd5f-4a44-bc28-635fc212faaf\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:39:39.342611\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 5,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-06-01T19:39:39.342611\"\n                },\n                {\n                    \"referenceId\": \"dadb5904-aaf8-4456-b463-3e18ea18bf6a\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:39:39.342611\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 6,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-07-01T19:39:39.342611\"\n                }\n            ]\n        },\n        {\n            \"referenceId\": \"737a3e71-4429-416d-8040-c13fc7a7aa43\",\n            \"entityStatus\": \"ACTIVE\",\n            \"createdDate\": \"2025-01-03T19:53:34.631835\",\n            \"updatedDate\": null,\n            \"name\": \"Loan name for Customer 1\",\n            \"description\": \"Loan description for Customer 1\",\n            \"installmentCount\": 6,\n            \"installmentAmount\": 500,\n            \"amount\": 2500,\n            \"totalAmount\": 3000,\n            \"interestRate\": 0.2,\n            \"firstDueDate\": \"2025-02-01T19:53:34.632834\",\n            \"lastDueDate\": \"2025-07-01T19:53:34.632834\",\n            \"paid\": false,\n            \"installments\": [\n                {\n                    \"referenceId\": \"45ab6fa0-d99f-4f0b-b9cf-84673b3f2c05\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:53:34.632834\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 1,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-02-01T19:53:34.632834\"\n                },\n                {\n                    \"referenceId\": \"9d1e1308-5e41-4cd1-9cad-4dbaa60af4d0\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:53:34.632834\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 2,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-03-01T19:53:34.632834\"\n                },\n                {\n                    \"referenceId\": \"0710112a-b2be-4146-a5cf-9be3840efcda\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:53:34.632834\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 3,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-04-01T19:53:34.632834\"\n                },\n                {\n                    \"referenceId\": \"15e5d4cf-b313-4616-ade8-275ff8e48292\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:53:34.632834\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 4,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-05-01T19:53:34.632834\"\n                },\n                {\n                    \"referenceId\": \"9a2da10d-cc24-454e-b959-6b9e8d755139\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:53:34.632834\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 5,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-06-01T19:53:34.632834\"\n                },\n                {\n                    \"referenceId\": \"9c2b6475-78f9-41dd-9ee0-bbc2c3ba5de0\",\n                    \"entityStatus\": \"ACTIVE\",\n                    \"createdDate\": \"2025-01-03T19:53:34.632834\",\n                    \"updatedDate\": null,\n                    \"paid\": false,\n                    \"installmentNumber\": 6,\n                    \"installmentAmount\": 500,\n                    \"dueDate\": \"2025-07-01T19:53:34.632834\"\n                }\n            ]\n        }\n    ],\n    \"page\": 0,\n    \"size\": 10,\n    \"pageCount\": 1,\n    \"totalCount\": 3\n}"
+				}
+			]
+		},
+		{
+			"name": "List Customer Loans Installments",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Customer-Id",
+						"value": "5784ba6e-075c-4506-96cb-c49dc7102f7f",
+						"type": "text"
+					},
+					{
+						"key": "X-Customer-Loan-Id",
+						"value": "737a3e71-4429-416d-8040-c13fc7a7aa43",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8100/customer-loans/installments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"customer-loans",
+						"installments"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "List Customer Loans Installments",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Customer-Id",
+								"value": "5784ba6e-075c-4506-96cb-c49dc7102f7f",
+								"type": "text"
+							},
+							{
+								"key": "X-Customer-Loan-Id",
+								"value": "737a3e71-4429-416d-8040-c13fc7a7aa43",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8100/customer-loans/installments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"customer-loans",
+								"installments"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Jan 2025 16:56:41 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"referenceId\": \"45ab6fa0-d99f-4f0b-b9cf-84673b3f2c05\",\n        \"entityStatus\": \"ACTIVE\",\n        \"createdDate\": \"2025-01-03T19:53:34.632834\",\n        \"updatedDate\": null,\n        \"paid\": true,\n        \"installmentNumber\": 1,\n        \"installmentAmount\": 500,\n        \"dueDate\": \"2025-02-01T19:53:34.632834\"\n    },\n    {\n        \"referenceId\": \"9d1e1308-5e41-4cd1-9cad-4dbaa60af4d0\",\n        \"entityStatus\": \"ACTIVE\",\n        \"createdDate\": \"2025-01-03T19:53:34.632834\",\n        \"updatedDate\": null,\n        \"paid\": true,\n        \"installmentNumber\": 2,\n        \"installmentAmount\": 500,\n        \"dueDate\": \"2025-03-01T19:53:34.632834\"\n    },\n    {\n        \"referenceId\": \"0710112a-b2be-4146-a5cf-9be3840efcda\",\n        \"entityStatus\": \"ACTIVE\",\n        \"createdDate\": \"2025-01-03T19:53:34.632834\",\n        \"updatedDate\": null,\n        \"paid\": true,\n        \"installmentNumber\": 3,\n        \"installmentAmount\": 500,\n        \"dueDate\": \"2025-04-01T19:53:34.632834\"\n    },\n    {\n        \"referenceId\": \"15e5d4cf-b313-4616-ade8-275ff8e48292\",\n        \"entityStatus\": \"ACTIVE\",\n        \"createdDate\": \"2025-01-03T19:53:34.632834\",\n        \"updatedDate\": null,\n        \"paid\": false,\n        \"installmentNumber\": 4,\n        \"installmentAmount\": 500,\n        \"dueDate\": \"2025-05-01T19:53:34.632834\"\n    },\n    {\n        \"referenceId\": \"9a2da10d-cc24-454e-b959-6b9e8d755139\",\n        \"entityStatus\": \"ACTIVE\",\n        \"createdDate\": \"2025-01-03T19:53:34.632834\",\n        \"updatedDate\": null,\n        \"paid\": false,\n        \"installmentNumber\": 5,\n        \"installmentAmount\": 500,\n        \"dueDate\": \"2025-06-01T19:53:34.632834\"\n    },\n    {\n        \"referenceId\": \"9c2b6475-78f9-41dd-9ee0-bbc2c3ba5de0\",\n        \"entityStatus\": \"ACTIVE\",\n        \"createdDate\": \"2025-01-03T19:53:34.632834\",\n        \"updatedDate\": null,\n        \"paid\": false,\n        \"installmentNumber\": 6,\n        \"installmentAmount\": 500,\n        \"dueDate\": \"2025-07-01T19:53:34.632834\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Pay Customer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Customer-Id",
+						"value": "5784ba6e-075c-4506-96cb-c49dc7102f7f",
+						"type": "text"
+					},
+					{
+						"key": "X-Customer-Loan-Id",
+						"value": "737a3e71-4429-416d-8040-c13fc7a7aa43",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 2000.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/customer-loans/pay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"customer-loans",
+						"pay"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create Customer Loan Copy",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Customer-Id",
+								"value": "5784ba6e-075c-4506-96cb-c49dc7102f7f",
+								"type": "text"
+							},
+							{
+								"key": "X-Customer-Loan-Id",
+								"value": "737a3e71-4429-416d-8040-c13fc7a7aa43",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": 2000.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8100/customer-loans/pay",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"customer-loans",
+								"pay"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Jan 2025 16:55:19 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"totalPaidAmount\": 1500,\n    \"changeAmount\": 500,\n    \"installmentsPaid\": [\n        1,\n        2,\n        3\n    ],\n    \"allInstallmentsPaid\": [\n        1,\n        2,\n        3\n    ],\n    \"completeLoanPaid\": false\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "password",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "user",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

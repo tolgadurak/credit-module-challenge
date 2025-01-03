@@ -11,6 +11,7 @@ import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.Customer
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanInstallmentCreateRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanLimitCreateRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanPayRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanCreateResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanInstallmentQueryResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanPayResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanQueryResponse;
@@ -31,7 +32,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -45,22 +50,20 @@ public class CustomerLoanService {
     private final CustomerLoanInstallmentJpaRepository customerLoanInstallmentJpaRepository;
 
     @Transactional
-    public void createCustomerLoan(String customerId, CustomerLoanCreateRequest customerLoanCreateRequest) {
-        CustomerEntity customerEntity = customerJpaRepository.findByReferenceId(customerId).orElseThrow(RuntimeException::new);
-        checkIfEligible(customerLoanCreateRequest, customerEntity);
+    public CustomerLoanCreateResponse createCustomerLoan(String customerId, CustomerLoanCreateRequest customerLoanCreateRequest) {
+        CustomerEntity customerEntity = customerJpaRepository.findByReferenceId(customerId).orElseThrow(() -> new LoanApiBusinessException("errors.customerNotFound", HttpStatus.BAD_REQUEST));
+        checkIfEligibleToGetLoan(customerLoanCreateRequest, customerEntity);
         BigDecimal totalAmount = calculateTotalAmount(customerLoanCreateRequest.getAmount(), customerLoanCreateRequest.getInterestRate());
         BigDecimal installmentAmount = calculateInstallmentAmount(totalAmount, customerLoanCreateRequest.getInstallmentCount());
         CustomerLoanEntity customerLoanEntity = createCustomerLoanEntity(customerLoanCreateRequest, customerEntity, totalAmount, installmentAmount);
         List<CustomerLoanInstallmentEntity> installments = createCustomerLoanInstallmentsEntity(customerLoanEntity, customerLoanCreateRequest, installmentAmount);
         updateCustomerLoanEntity(customerLoanEntity, installments);
-        CustomerLoanLimitEntity customerLoanLimitEntity = createCustomerLoanLimitEntity(totalAmount, customerEntity);
+        CustomerLoanLimitEntity customerLoanLimitEntity = createCustomerLoanLimitEntity(totalAmount, customerEntity, false);
         customerEntity.getLoanLimits().add(customerLoanLimitEntity);
-        customerLoanJpaRepository.save(customerLoanEntity);
-    }
-
-    @Transactional
-    public CustomerLoanPayResponse payCustomerLoan(String customerId, String loanId, CustomerLoanPayRequest customerLoanPayRequest) {
-        return CustomerLoanPayResponse.builder().build();
+        CustomerLoanEntity savedEntity = customerLoanJpaRepository.save(customerLoanEntity);
+        return CustomerLoanCreateResponse.builder()
+                .referenceId(savedEntity.getReferenceId())
+                .build();
     }
 
     @Transactional
@@ -79,19 +82,76 @@ public class CustomerLoanService {
 
     @Transactional
     public List<CustomerLoanInstallmentQueryResponse> queryCustomerLoanInstallments(String customerId, String customerLoanId) {
-        customerLoanJpaRepository.findByCustomerReferenceIdAndReferenceId(customerId, customerLoanId)
+        customerLoanJpaRepository.findByCustomerIdAndCustomerLoanId(customerId, customerLoanId)
                 .orElseThrow(() -> new LoanApiBusinessException("errors.customerLoanNotFound", HttpStatus.BAD_REQUEST));
-        List<CustomerLoanInstallmentEntity> installmentEntities = customerLoanInstallmentJpaRepository.findByCustomerLoanCustomerReferenceIdAndCustomerLoanReferenceId(customerId, customerLoanId);
+        List<CustomerLoanInstallmentEntity> installmentEntities = customerLoanInstallmentJpaRepository.findByCustomerIdAndCustomerLoanId(customerId, customerLoanId);
         return customerLoanServiceMapper.toCustomerLoanInstallmentQueryResponseList(installmentEntities);
     }
 
-    private void checkIfEligible(CustomerLoanCreateRequest customerLoanCreateRequest, CustomerEntity customerEntity) {
+    @Transactional
+    public CustomerLoanPayResponse payCustomerLoan(String customerId, String customerLoanId, CustomerLoanPayRequest customerLoanPayRequest) {
+        CustomerLoanEntity customerLoanEntity = customerLoanJpaRepository.findByCustomerIdAndCustomerLoanId(customerId, customerLoanId)
+                .orElseThrow(() -> new LoanApiBusinessException("errors.customerLoanNotFound", HttpStatus.BAD_REQUEST));
+
+        if (customerLoanEntity.getPaid()) {
+            throw new LoanApiBusinessException("errors.customerLoanIsAlreadyPaid", HttpStatus.BAD_REQUEST);
+        }
+
+        List<CustomerLoanInstallmentEntity> installmentsCanBePaid = customerLoanEntity.getInstallments().stream()
+                .filter(Predicate.not(CustomerLoanInstallmentEntity::getPaid))
+                .filter(installment -> installment.getDueDate()
+                        .isBefore(LocalDateTime.now().plusMonths(loanApiConfig.getMaxNumberOfMonthsCanBePaid())))
+                .sorted(Comparator.comparingInt(CustomerLoanInstallmentEntity::getInstallmentNumber))
+                .toList();
+
+        if (installmentsCanBePaid.isEmpty()) {
+            throw new LoanApiBusinessException("errors.noAvailableInstallmentsToBePaid", HttpStatus.BAD_REQUEST);
+        }
+
+        if (customerLoanPayRequest.getAmount().compareTo(installmentsCanBePaid.getFirst().getInstallmentAmount()) < 0) {
+            throw new LoanApiBusinessException("errors.insufficientAmountToPay", HttpStatus.BAD_REQUEST);
+        }
+
+        BigDecimal changeAmount = customerLoanPayRequest.getAmount();
+        BigDecimal totalPaidAmount = BigDecimal.ZERO;
+        List<Integer> installmentsPaid = new ArrayList<>();
+
+        for (CustomerLoanInstallmentEntity installment : installmentsCanBePaid) {
+            BigDecimal installmentAmount = installment.getInstallmentAmount();
+            if (installmentAmount.compareTo(changeAmount) > 0) {
+                break;
+            }
+            installment.setPaid(Boolean.TRUE);
+            changeAmount = changeAmount.subtract(installmentAmount);
+            totalPaidAmount = totalPaidAmount.add(installmentAmount);
+            installmentsPaid.add(installment.getInstallmentNumber());
+        }
+
+        if (customerLoanEntity.getInstallments().stream().allMatch(CustomerLoanInstallmentEntity::getPaid)) {
+            customerLoanEntity.setPaid(Boolean.TRUE);
+            createCustomerLoanLimitEntity(customerLoanEntity.getTotalAmount(), customerLoanEntity.getCustomer(), true);
+        }
+
+        customerLoanEntity = customerLoanJpaRepository.save(customerLoanEntity);
+        return CustomerLoanPayResponse.builder()
+                .totalPaidAmount(totalPaidAmount)
+                .changeAmount(changeAmount)
+                .installmentsPaid(installmentsPaid)
+                .allInstallmentsPaid(customerLoanEntity.getInstallments().stream()
+                        .filter(CustomerLoanInstallmentEntity::getPaid)
+                        .map(CustomerLoanInstallmentEntity::getInstallmentNumber)
+                        .collect(Collectors.toList()))
+                .completeLoanPaid(customerLoanEntity.getPaid())
+                .build();
+    }
+
+    private void checkIfEligibleToGetLoan(CustomerLoanCreateRequest customerLoanCreateRequest, CustomerEntity customerEntity) {
         List<Integer> allowedInstallments = loanApiConfig.getAllowedInstallments();
         if (!allowedInstallments.contains(customerLoanCreateRequest.getInstallmentCount())) {
             throw new LoanApiBusinessException("errors.invalidInstallmentCount", HttpStatus.BAD_REQUEST);
         }
-        if (customerLoanCreateRequest.getInterestRate().compareTo(loanApiConfig.getMinimumInterestRate()) < 0 ||
-                customerLoanCreateRequest.getInterestRate().compareTo(loanApiConfig.getMaximumInterestRate()) > 0) {
+        if (customerLoanCreateRequest.getInterestRate().compareTo(loanApiConfig.getMinInterestRate()) < 0 ||
+                customerLoanCreateRequest.getInterestRate().compareTo(loanApiConfig.getMaxInterestRate()) > 0) {
             throw new LoanApiBusinessException("errors.invalidInterestRate", HttpStatus.BAD_REQUEST);
         }
         int customerLoanLimitResult = customerEntity.getLoanLimits().stream()
@@ -134,9 +194,9 @@ public class CustomerLoanService {
         return totalAmount.divide(new BigDecimal(installmentCount), 2, RoundingMode.HALF_UP);
     }
 
-    private CustomerLoanLimitEntity createCustomerLoanLimitEntity(BigDecimal totalAmount, CustomerEntity customerEntity) {
+    private CustomerLoanLimitEntity createCustomerLoanLimitEntity(BigDecimal totalAmount, CustomerEntity customerEntity, boolean isPositive) {
         CustomerLoanLimitEntity customerLoanLimitEntity = customerLoanServiceMapper.toEntity(CustomerLoanLimitCreateRequest.builder()
-                .amount(totalAmount.negate())
+                .amount(isPositive ? totalAmount : totalAmount.negate())
                 .build());
         customerLoanLimitEntity.setCustomer(customerEntity);
         return customerLoanLimitEntity;

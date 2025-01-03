@@ -18,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class LoanApiConfig {
     private List<Integer> allowedInstallments;
-    private BigDecimal minimumInterestRate;
-    private BigDecimal maximumInterestRate;
+    private BigDecimal minInterestRate;
+    private BigDecimal maxInterestRate;
+    private Integer maxNumberOfMonthsCanBePaid;
 }

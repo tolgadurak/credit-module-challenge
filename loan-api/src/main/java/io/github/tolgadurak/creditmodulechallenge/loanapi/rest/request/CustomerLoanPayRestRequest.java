@@ -12,7 +12,5 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerLoanPayRestRequest {
-    private String customerReferenceId;
-    private String loanReferenceId;
     private BigDecimal amount;
 }

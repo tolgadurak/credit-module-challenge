@@ -16,5 +16,11 @@ spring:
 loan-api:
   config:
     allowed-installments: 6, 9, 12, 24
-    minimum-interest-rate: 0.10
-    maximum-interest-rate: 0.50
+    min-interest-rate: 0.10
+    max-interest-rate: 0.50
+    max-number-of-months-can-be-paid: 3
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false

@@ -73,6 +73,20 @@ You can also run entire stack in Docker by using the command below. Please make 
 CONFIG_SERVER_VERSION=SNAPSHOT LOAN_API_VERSION=SNAPSHOT docker compose -f compose-local.yaml up -d
 ```
 
+## Test
+
+- There are 4 endpoints in loan-api.
+
+  | Method | Endpoint                      | Headers                               | Description                                    |
+  |:-------|:------------------------------|---------------------------------------|:-----------------------------------------------|
+  | POST   | /customer-loans               | `X-Customer-Id `                      | Used to create new customer loans.             |
+  | GET    | /customer-loans               | `X-Customer-Id`                       | Used to list customer loans.                   |
+  | GET    | /customer-loans/installments  | `X-Customer-Id`, `X-Customer-Loan-Id` | Used to list installments of a customer loan.  |
+  | POST   | /customer-loans/pay           | `X-Customer-Id`, `X-Customer-Loan-Id` | Used to pay a customer loan.                   |
+
+- Swagger UI is available at `/swagger-ui/index.html`
+- API can be tested using the Postman collection in `postman` folder.
+
 ## Development
 Any modern IDE will be useful for development of this project.
 However, it is also possible to use a text editor or a terminal. Before running Spring Boot apps, please set appropriate profile in JVM options.

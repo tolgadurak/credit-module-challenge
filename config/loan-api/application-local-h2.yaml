@@ -13,3 +13,8 @@ spring:
       settings:
         web-allow-others: false
         trace: false
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true

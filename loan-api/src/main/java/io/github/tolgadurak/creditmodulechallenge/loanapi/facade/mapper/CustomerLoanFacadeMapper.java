@@ -3,6 +3,7 @@ package io.github.tolgadurak.creditmodulechallenge.loanapi.facade.mapper;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanCreateRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanFilterRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.request.CustomerLoanPayRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanCreateResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanInstallmentQueryResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanPayResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.CustomerLoanQueryResponse;
@@ -10,6 +11,7 @@ import io.github.tolgadurak.creditmodulechallenge.loanapi.model.response.PagedRe
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanCreateRestRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanFilterRestRequest;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.request.CustomerLoanPayRestRequest;
+import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanCreateRestResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanInstallmentQueryRestResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanPayResultRestResponse;
 import io.github.tolgadurak.creditmodulechallenge.loanapi.rest.response.CustomerLoanQueryRestResponse;
@@ -36,5 +38,7 @@ public interface CustomerLoanFacadeMapper {
     List<CustomerLoanInstallmentQueryRestResponse> toCustomerLoanInstallmentQueryRestResponseList(List<CustomerLoanInstallmentQueryResponse> customerLoanInstallmentQueryResponseList);
 
     CustomerLoanPayResultRestResponse toRestResponse(CustomerLoanPayResponse customerLoanPayResponse);
+
+    CustomerLoanCreateRestResponse toRestResponse(CustomerLoanCreateResponse customerLoanCreateResponse);
 
 }

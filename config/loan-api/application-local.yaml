@@ -4,3 +4,8 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.PostgreSQLDialect
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
