@@ -9,7 +9,7 @@ services:
       - build
     volumes:
       - ./config-server:/home/gradle/project
-      - gradle_home:/home/gradle/.gradle
+      - config_server_gradle_home:/home/gradle/.gradle
     working_dir: /home/gradle/project
   loan-api:
     image: gradle:jdk21-alpine
@@ -20,10 +20,11 @@ services:
       - build
     volumes:
       - ./loan-api:/home/gradle/project
-      - gradle_home:/home/gradle/.gradle
+      - loan_api_gradle_home:/home/gradle/.gradle
     working_dir: /home/gradle/project
     depends_on:
       - config-server
 
 volumes:
-  gradle_home:
+  config_server_gradle_home:
+  loan_api_gradle_home:
