@@ -7,7 +7,6 @@ services:
       - --no-daemon
       - clean
       - build
-      - --parallel
     volumes:
       - ./config-server:/home/gradle/project
       - gradle_home:/home/gradle/.gradle
@@ -19,11 +18,12 @@ services:
       - --no-daemon
       - clean
       - build
-      - --parallel
     volumes:
       - ./loan-api:/home/gradle/project
       - gradle_home:/home/gradle/.gradle
     working_dir: /home/gradle/project
+    depends_on:
+      - config-server
 
 volumes:
   gradle_home:
