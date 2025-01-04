@@ -25,17 +25,18 @@ This project consist of several modules which is independently managed Spring Bo
 There are several ways to build Spring Boot modules.
 The traditional way is to use embedded gradlew
 scripts which use gradle build system.
-Depending on platform run the following commands.
+Depending on platform, you can run the following commands.
+Please make sure you are on the root directory of project.
 
 ### Windows
-You need to go each module directory to run separately.
+
 ```
 .\gradlew.bat --no-daemon -p config-server clean build
 .\gradlew.bat --no-daemon -p loan-api clean build
 ```
 
 ### Linux or macOS
-You need to go each module directory to run separately.
+
 ```
 sh gradlew --no-daemon -p config-server clean build
 sh gradlew --no-daemon -p loan-api clean build
