@@ -30,13 +30,15 @@ Depending on platform run the following commands.
 ### Windows
 You need to go each module directory to run separately.
 ```
-gradlew.bat clean install
+.\gradlew.bat --no-daemon -p config-server clean build
+.\gradlew.bat --no-daemon -p loan-api clean build
 ```
 
 ### Linux or macOS
 You need to go each module directory to run separately.
 ```
-gradlew clean install
+sh gradlew --no-daemon -p config-server clean build
+sh gradlew --no-daemon -p loan-api clean build
 ```
 
 ### Docker
@@ -48,7 +50,6 @@ It is also possible to build Docker images by using following commands respectiv
   docker pull eclipse-temurin:21-alpine
   docker pull postgres:17.2
   ```
-
 
 - Build Spring Boot JAR files using compose-gradle.yaml file.
   ```
@@ -62,28 +63,32 @@ It is also possible to build Docker images by using following commands respectiv
   ```
 
 ## How to run
-There are several ways to run modules.
+There are several ways to run modules. Please make sure you are on the root directory of project.
 
 ### Traditional way
-The traditional way to run by following command. You need to go each module directory to run separately.
+The traditional way to run by following commands.
 ```
-java -jar build/libs/$JAR_FILE_NAME.jar
+java -jar config-server/build/libs/config-server-SNAPSHOT.jar --spring.profiles.active=local,native
+java -jar loan-api/build/libs/loan-api-SNAPSHOT.jar --spring.profiles.active=local
 ```
 
 ### Gradle way
-Gradle bootRun task can be used to run. You need to go each module directory to run separately.
+Gradle bootRun task can be used to run.
+
 #### Windows
 ```
-gradlew.bat bootRun
+.\gradlew.bat --no-daemon -p config-server bootRun --args='--spring.profiles.active=local,native --spring.cloud.config.server.native.search-locations=file:../config/{application}'
+.\gradlew.bat --no-daemon -p loan-api bootRun --args='--spring.profiles.active=local'
 ```
 
 #### Linux or macOS
 ```
-gradlew bootRun
+sh gradlew --no-daemon -p config-server bootRun --args='--spring.profiles.active=local,native --spring.cloud.config.server.native.search-locations=file:../config/{application}'
+sh gradlew --no-daemon -p loan-api bootRun --args='--spring.profiles.active=local'
 ```
 
 ### Docker way
-You can also run entire stack in Docker by using the command below. Please make sure you are on the root directory of project.
+You can also run entire stack in Docker by using the command below.
 ```
 CONFIG_SERVER_VERSION=SNAPSHOT LOAN_API_VERSION=SNAPSHOT docker compose -f compose-local.yaml up -d
 ```
