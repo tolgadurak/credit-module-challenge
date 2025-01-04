@@ -22,8 +22,6 @@ services:
       - ./loan-api:/home/gradle/project
       - loan_api_gradle_home:/home/gradle/.gradle
     working_dir: /home/gradle/project
-    depends_on:
-      - config-server
 
 volumes:
   config_server_gradle_home:
