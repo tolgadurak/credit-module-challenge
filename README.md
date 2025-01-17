@@ -16,10 +16,10 @@ docker compose up -d
 ## Spring Boot Modules
 This project consist of several modules which is independently managed Spring Boot projects which use Gradle build system.
 
-| Module&nbsp;Name | Default port | Description                                                         |
-|:----------------:|:------------:|---------------------------------------------------------------------|
-|  config-server   |     8888     | Config server which needs to boot before other modules              |
-|     loan-api     |     8100     | Loan API which contains business logic of customers and their loans |
+| Module&nbsp;Name | Default port | Container port | Description                                                         |
+|:----------------:|:------------:|:--------------:|---------------------------------------------------------------------|
+|  config-server   |     8888     |      8999      | Config server which needs to boot before other modules              |
+|     loan-api     |     8100     |      8200      | Loan API which contains business logic of customers and their loans |
 
 ## How to build
 There are several ways to build Spring Boot modules.
