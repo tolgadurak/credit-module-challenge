@@ -127,3 +127,13 @@ For other modules, you can use local profile.
 spring.profiles.active=local
 ```
 
+## Roadmap
+1. - [ ] API Gateway Integration
+
+2. - [ ] JWT Authorization
+     - [ ] Setup authorization server
+     - [ ] Create user domain
+     - [ ] Configure resource server
+     - [ ] Role based access
+
+  
