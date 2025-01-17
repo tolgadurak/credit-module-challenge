@@ -1,7 +1,7 @@
 name: credit_module_challenge_build
 services:
   config-server:
-    image: gradle:jdk21-alpine
+    image: docker.io/library/gradle:jdk21-alpine
     command:
       - gradle
       - --no-daemon
@@ -12,7 +12,7 @@ services:
       - config_server_gradle_home:/home/gradle/.gradle
     working_dir: /home/gradle/project
   loan-api:
-    image: gradle:jdk21-alpine
+    image: docker.io/library/gradle:jdk21-alpine
     command:
       - gradle
       - --no-daemon
