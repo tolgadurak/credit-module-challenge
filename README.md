@@ -16,10 +16,10 @@ docker compose up -d
 ## Spring Boot Modules
 This project consist of several modules which is independently managed Spring Boot projects which use Gradle build system.
 
-| Module&nbsp;Name | Description                                                         |
-|:----------------:|---------------------------------------------------------------------|
-|  config-server   | Config server which needs to boot before other modules              |
-|     loan-api     | Loan API which contains business logic of customers and their loans |
+| Module&nbsp;Name | Default port | Description                                                         |
+|:----------------:|:------------:|---------------------------------------------------------------------|
+|  config-server   |     8888     | Config server which needs to boot before other modules              |
+|     loan-api     |     8100     | Loan API which contains business logic of customers and their loans |
 
 ## How to build
 There are several ways to build Spring Boot modules.
@@ -110,10 +110,20 @@ CONFIG_SERVER_VERSION=SNAPSHOT LOAN_API_VERSION=SNAPSHOT docker compose -f compo
 
 ## Development
 Any modern IDE will be useful for development of this project.
-However, it is also possible to use a text editor or a terminal. Before running Spring Boot apps, please set appropriate profile in JVM options.
+However, it is also possible to use a text editor or a terminal. Before running Spring Boot apps, please set appropriate properties below.
 
-For example:
+Before starting config-server in your local, you can use native and local profiles.
 ```
--Dspring.profiles.active=local
+spring.profiles.active=native,local
+```
+
+You can also change the location of config directory.
+```
+spring.cloud.config.server.native.search-locations
+```
+
+For other modules, you can use local profile.
+```
+spring.profiles.active=local
 ```
 
