@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:17.2
     ports:
-      - "127.0.0.1:5433:5433"
+      - "5433:5433"
     restart: always
     environment:
       PGPORT: 5433
@@ -17,7 +17,7 @@ services:
   config-server:
     image: localhost:5000/credit-module-challenge/config-server:${CONFIG_SERVER_VERSION}
     ports:
-      - "127.0.0.1:8999:8999"
+      - "8999:8999"
     restart: always
     env_file:
       - compose_env/config-server/local.env
@@ -33,7 +33,7 @@ services:
   loan-api:
     image: localhost:5000/credit-module-challenge/loan-api:${LOAN_API_VERSION}
     ports:
-      - "127.0.0.1:8200:8200"
+      - "8200:8200"
     depends_on:
       - config-server
     restart: always
